@@ -55,7 +55,6 @@ namespace HelpDeskApi.Services
 				//Runs everytime a user object is initialised on whatever "PasswordHash" value was. 
 				// Password: hello 123 --> HashPassword(hello 123) --->BCrypt.Hashpassword(hello 123) scrambles. ---> Return the scramble --> PasswordHash = "the scramble".
 				//Save to DB - plain text passwrod never touches the DB
-				
 		private string HashPassword(string password) //Pass in a string called password
 		{
 			return BCrypt.Net.BCrypt.HashPassword(password); //Call Brypt NuGet packages built in hashing method.
@@ -124,9 +123,9 @@ namespace HelpDeskApi.Services
 						signingCredentials: credentials
 			);
 
-					//JWT SecurityTokenHandler class that handles JWT Tokens. 
-												//Takes our token object and converts it to an actual JWT string
-												//That gets sent back to user on login. 
+					//JWTSecurityTokenHandler class that handles JWT Tokens. 
+					//Takes our token object and converts it to an actual JWT string
+					//That gets sent back to user on login. 
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
