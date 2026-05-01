@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 		//Add AuthService to Program.cs so it can be injected in other places (Scoped lifetime - one instance per request. Created when request comes in anad disposed when done)
 		//One authservice per request = every reg or login gets its own dedicated instance
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<TicketService>();
 builder.Services.AddAuthentication("Bearer") // Whenever someone needs auth the DEFAULT AUTHENTICATION SCHEME method is the one labelled "bearer" 
 		//Addjwtbearer registers the logic and files it under the name bearer 
 	.AddJwtBearer(options => //options is the settings for JWT Handler ready to config
