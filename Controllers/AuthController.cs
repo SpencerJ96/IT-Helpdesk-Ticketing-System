@@ -16,28 +16,33 @@ namespace HelpDeskApi.Controllers
 			_authService = authService; //Assign _authService an instance of authService. Now every method in the class can see it. Our Register and login methods can now call _authService.Register()
 		}
 
-		[HttpPost("register")]
-		public async Task<IActionResult> Register ([FromBody] RegisterRequest request)
-		{
-			var result = await _authService.Register(request.Name, request.Email, request.Password);
 
-			if (result == "User Already Exists")
-			return BadRequest(result);
+			//Attribute as a Post called Register
+		[HttpPost("register")] 
+		public async Task<IActionResult> Register ([FromBody] RegisterRequest request)//Async task that returns a HTTP response. Frombody = read body request and map it to request
+		{
+			var result = await _authService.Register(request.Name, request.Email, request.Password); //Wait for register to complete, take properties from body
+
+			if (result == "User Already Exists") //If register method in authservice returns that 
+			return BadRequest(result); //Send back badrequest
 
 			return Ok(result);
 		}
-
+		//attribute for controller, called login
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginRequest request)
 		{
 			var result = await _authService.Login(request.Email, request.Password);
 
-			if (result == "User not found" || result == "Invalid Password")
+			if (result == "User not found" || result == "Invalid Password") //Return failed credentials
 				return Unauthorized(result);
-
+				
+				//Return JWT token string from login, wrap it in an unlabelled anon object with property called token so client can understand better
 				return Ok (new { token = result });
 		}
 
+		//Records can hold data without having to define it as explicity as a class.
+		//Records auto-generate the properties from what you put in the brackets.
 		public record RegisterRequest(string Name, string Email, string Password);
 		public record LoginRequest(string Email, string Password);
 
