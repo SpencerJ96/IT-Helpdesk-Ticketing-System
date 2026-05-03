@@ -44,9 +44,6 @@ namespace HelpDeskApi.Data
 			// Therefore the cascade can no longer occur on this path and rather flows like
 			//USER DELETED --> TICKET DELETED ---> COMMENT DELETED
 
-
-
-
 		//BUG FIX - Here we're overiding the original OnModelCreating method from EF Inherited from " : dbContext"
 		// Originally, when a user was deleted :
 		//  			User deleted - ticket deleted - Comments Deleted
@@ -57,6 +54,21 @@ namespace HelpDeskApi.Data
 		// Restrict the user deletion path by telling EF (which then tells SQL) do not delete comments via the c.UserID
 		}
 	
+	public void SeedData()
+		{
+			if (!Users.Any(u => u.Role == "Admin"))
+			{
+				Users.Add(new User
+				{
+					Name = "Admin",
+					Email = "admin@helpdesk.com",
+					PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin1234!"), //For portfolio/learning putting the password here is ok. In actual production the password would be stored in envrionemntal variables or a secrets manager.
+					Role = "Admin"
+				});
+				SaveChanges();
+			}
+		}
+
 	}
 }
 

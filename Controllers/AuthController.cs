@@ -17,7 +17,7 @@ namespace HelpDeskApi.Controllers
 		}
 
 
-			//Attribute as a Post called Register
+			//Attribute as a Post request called Register
 		[HttpPost("register")] 
 		public async Task<IActionResult> Register ([FromBody] RegisterRequest request)//Async task that returns a HTTP response. Frombody = read body request and map it to request
 		{

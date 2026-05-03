@@ -35,7 +35,11 @@ builder.Services.AddAuthentication("Bearer") // Whenever someone needs auth the 
 		};
 	});
 	builder.Services.AddAuthorization();
-	builder.Services.AddControllers();
+	builder.Services.AddControllers().AddJsonOptions(options =>
+	{					//Configure the seralizer options to ignore cucles - when it sees an object its already seralised, it stops and outputs null.
+						//When it hits Comment.Ticket it realises its already seralised 
+		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+	});
 
 //Everything above this is configuration. Adding services, telling it what DB and what it communicates in
 
@@ -45,6 +49,13 @@ var app = builder.Build();
 	if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
+}
+		//Create temp window into our DI Container 
+using (var scope = app.Services.CreateScope())
+{					//Access apps Service provider property, use getrequiredservice method pass in our DB
+	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	//Run our Seed data method 
+	db.SeedData();
 }
 
 app.UseHttpsRedirection();
