@@ -1,0 +1,21 @@
+@model HelpDeskMvc.Models.TicketDetailViewModel
+
+<div>
+	<div>
+		<h1>@Model.Title</h1>
+	</div>
+	<div>
+		<p>@Model.Status</p>
+		<p>@Model.Priority</p>
+		<p>@Model.CreatedAt</p>
+	</div>
+
+	<div>
+		@foreach (var comment in Model.Comments)
+		{
+			<p>@comment.UserName</p>
+			<p>@comment.CreatedAt</p>
+			<p>@comment.Content</p>
+		}
+	</div>
+</div>
